@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Activate environment
+source "$(dirname -- "$0")/../api/venv/bin/activate"
+
+# API checks
+cd api
+flake8 ./app.py || exit 1
+black --check ./app.py  || exit 1
+isort --check-only ./app.py  || exit 1
+
+# Front-end checks
+cd ../web
+npx lint-staged
+npx tsc --noEmit --noUnusedLocals  
+npm test -- --only-changed --watchAll=false
+
+RETURN=$?
+
+if [ $RETURN -ne 0 ];
+then
+  echo "@@@@@@ Pre-commit checks failed! Please fix your code before committing! @@@@@@"
+  exit $RETURN
+fi
