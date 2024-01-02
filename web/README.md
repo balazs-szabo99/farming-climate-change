@@ -1,3 +1,13 @@
+# Web Application for Farming Climate Change
+
+This is the frontend web application for the Farming Climate Change project. It's built with React, a popular JavaScript library for building user interfaces.
+
+## Installation
+
+Before running the web application, you need to install the necessary dependencies. Make sure you have Node.js and npm installed on your machine. Then, navigate to the `web` directory and run:
+
+`npm install`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
