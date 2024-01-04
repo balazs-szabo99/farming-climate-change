@@ -4,31 +4,34 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { Box, ChakraProvider, extendTheme } from '@chakra-ui/react';
+import {
+  Box,
+  ChakraProvider,
+  extendTheme,
+  withDefaultColorScheme,
+} from '@chakra-ui/react';
 
-const theme = extendTheme({
-  colors: {
-    brand: {
-      500: '#008000',
-      700: '#004d00',
+const theme = extendTheme(
+  {
+    colors: {
+      brand: {
+        500: '#008000',
+        700: '#004d00',
+      },
     },
-  },
-  components: {
-    // NOTE: POC for customizing components, can be removed later
-    Button: {
-      baseStyle: {
-        color: 'white',
-        backgroundColor: 'brand.500',
-        _hover: {
-          backgroundColor: 'brand.700',
+    components: {
+      // NOTE: POC for customizing components, can be removed later
+      Button: {
+        baseStyle: {
+          _hover: {
+            backgroundColor: 'brand.700',
+          },
         },
       },
-      defaultProps: {
-        colorScheme: 'brand',
-      },
     },
   },
-});
+  withDefaultColorScheme({ colorScheme: 'brand' }),
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
