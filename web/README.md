@@ -44,3 +44,27 @@ When creating new components, Chakra UI components should be used. This ensures 
 When you need a color for your component, use the brand color scheme from our theme. This helps maintain a consistent look and feel across the app.
 
 If you need to customize the style of a Chakra UI component, consider extending the theme instead of using inline styles or external CSS. This makes it easier to manage styles and promotes consistency.
+
+## API Service
+
+The API service is implemented in [`ApiService.ts`](web/src/Utils/ApiService.ts). This service is responsible for making all API calls from the application.
+
+### Usage
+
+To use the API service, you first need to import it:
+
+```typescript
+import { ApiService } from './Utils/ApiService';
+```
+
+Then, you can call the methods provided by the service. For example, to fetch landing data, you can use the fetchLandingData method:
+
+```
+const result = await ApiService.fetchLandingData();
+```
+
+This method will return a promise that resolves to the landing data. If there's an error while fetching the data, the promise will be rejected with an error message.
+
+### Error Handling
+
+When using the API service, you should always handle potential errors. In case of an error, the service returns an object with a `error` property.
