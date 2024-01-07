@@ -1,4 +1,4 @@
-# Farming Climate Change Data API
+# AgroAware Farming Climate Change Data API
 
 ## Overview
 
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 2. Run the following command:
 
 ```
-flask run
+flask run --debug
 ```
 
 The API will be accessible at http://127.0.0.1:5000/ by default.

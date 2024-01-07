@@ -1,4 +1,4 @@
-# Web Application for Farming Climate Change
+# AgroAware - Web Application for Farming Climate Change
 
 This is the frontend web application for the Farming Climate Change project. It's built with React, a popular JavaScript library for building user interfaces.
 
