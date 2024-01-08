@@ -79,3 +79,23 @@ Example using curl:
 ```
 curl http://127.0.0.1:5000/
 ```
+
+## Data Collection & Analysis
+
+1. Identification of specific data relevant to climate change
+2. Using this data to create 3 distinct data visualizations
+
+* Change of greenhouse gas emission and agricultural land from 1990
+  * Source: 
+    * Greenhouse gas emission: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
+    * Ggricultural land: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
+  
+* Change of greenhouse gas and cereal yield from 1990 
+  * Source:
+    * Greenhouse gas emission: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
+    * Cereal yields: https://data.worldbank.org/indicator/AG.YLD.CREL.KG
+* Change of world population and arable land from 1990
+  * Source:
+    * World poplation:  https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&start=1990
+    * Arable land: https://data.worldbank.org/indicator/AG.LND.ARBL.HA.PC
+    
