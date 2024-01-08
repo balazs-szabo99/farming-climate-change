@@ -18,13 +18,21 @@ For a better development experience and automated linting/formatting, we recomme
 
 1. Make sure you are in the `api` folder of the project.
 
-2. On Unix or MacOS, run:
+2. Create a virtual environment and activate it:
 
-`source venv/bin/activate`
+- On Unix or MacOS, run:
 
-On Windows, run:
+```
+python -m venv venv
+source venv/bin/activate
+```
 
-`.\venv\Scripts\activate`
+- On Windows, run:
+
+```
+python -m venv venv
+.\venv\Scripts\activate
+```
 
 ## Installing Dependencies
 
