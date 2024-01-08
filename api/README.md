@@ -83,19 +83,33 @@ curl http://127.0.0.1:5000/
 ## Data Collection & Analysis
 
 1. Identification of specific data relevant to climate change
-2. Using this data to create 3 distinct data visualizations
+2. Data analysis: to be defined...
 
-* Change of greenhouse gas emission and agricultural land from 1990
-  * Source: 
-    * Greenhouse gas emission: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
-    * Ggricultural land: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
+### Charts
+
+1. Change of greenhouse gas emission and agricultural land from 1990
+* Data used: 
+  * Greenhouse gas emission
+    * Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
+    * CSV: `greenhouse_gas_emission.csv`
+  * Agricultural land
+    * Source: Agricultural land: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
+    * CSV: `agricultural_land`
   
-* Change of greenhouse gas and cereal yield from 1990 
-  * Source:
-    * Greenhouse gas emission: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
-    * Cereal yields: https://data.worldbank.org/indicator/AG.YLD.CREL.KG
-* Change of world population and arable land from 1990
-  * Source:
-    * World poplation:  https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&start=1990
-    * Arable land: https://data.worldbank.org/indicator/AG.LND.ARBL.HA.PC
-    
+2. Change of greenhouse gas and cereal yield from 1990 
+* Data used: 
+  * Greenhouse gas emission
+    * Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
+    * CSV: `greenhouse_gas_emission.csv`
+  * Cereal yield
+    * Source: https://data.worldbank.org/indicator/AG.YLD.CREL.KG
+    * CSV: `cereal_yield`
+
+3. Change of population and arable land from 1990
+* Data used: 
+  * Population
+    * Source: https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&start=1990
+    * CSV: `population`
+  * Arable land
+    * Source: https://data.worldbank.org/indicator/AG.LND.ARBL.HA.PC
+    * CSV: `arable_land`
