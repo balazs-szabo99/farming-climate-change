@@ -12,8 +12,7 @@ const Header: FC = () => {
       data-testid={'header'}
     >
       <Text fontSize="2xl" fontWeight="bold" color="white">
-        {/* TODO: replace with actual app name */}
-        App Title
+        AgroAware - Farming Climate Change
       </Text>
     </Flex>
   );
