@@ -93,8 +93,8 @@ curl http://127.0.0.1:5000/
     * Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
     * CSV: `greenhouse_gas_emission.csv`
   * Agricultural land
-    * Source: Agricultural land: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
-    * CSV: `agricultural_land`
+    * Source: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
+    * CSV: `agricultural_land.csv`
   
 2. Change of greenhouse gas and cereal yield from 1990 
 * Data used: 
@@ -103,13 +103,13 @@ curl http://127.0.0.1:5000/
     * CSV: `greenhouse_gas_emission.csv`
   * Cereal yield
     * Source: https://data.worldbank.org/indicator/AG.YLD.CREL.KG
-    * CSV: `cereal_yield`
+    * CSV: `cereal_yield.csv`
 
 3. Change of population and arable land from 1990
 * Data used: 
   * Population
     * Source: https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&start=1990
-    * CSV: `population`
+    * CSV: `population.csv`
   * Arable land
     * Source: https://data.worldbank.org/indicator/AG.LND.ARBL.HA.PC
-    * CSV: `arable_land`
+    * CSV: `arable_land.csv`
