@@ -1,8 +1,24 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Prevent committing to main branch
+CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+if [ "$CURRENT_BRANCH" == "main" ]; then
+  echo "You are not allowed to commit directly to the main branch. Please create a feature branch and make a pull request."
+  exit 1
+fi 
+
 # Activate environment
-source "$(dirname -- "$0")/../api/venv/bin/activate"
+# Check if the OS is macOS
+if [[ $(uname) == "Darwin" ]]; then
+  source "$(dirname -- "$0")/../api/venv/bin/activate"
+# Check if the OS is Windows
+elif [[ $(uname -o 2>/dev/null) == "Msys" ]]; then
+  $(dirname -- "$0")/../api/venv/Scripts/activate
+else
+  echo "Unknown operating system, cannot activate environment"
+  exit 1
+fi
 
 # API checks
 cd api
