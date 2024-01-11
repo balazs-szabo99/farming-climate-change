@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Alert, Box, Center, Flex, Grid, Spinner } from '@chakra-ui/react';
 
 import { LandingData } from './types';
 import { fetchLandingData } from './Utils/apiCalls';
 
 import Header from './Components/Header';
+import Chart from './Components/Chart';
 
 function App() {
   const [data, setData] = useState<LandingData>();
@@ -12,7 +14,6 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetchLandingData();
-
       if ('error' in result) {
         setError(result.error);
       } else {
@@ -23,19 +24,36 @@ function App() {
     fetchData();
   }, []);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="App">
+    <Flex
+      direction={'column'}
+      minH={'100vh'}
+      bgGradient="linear(to-br, green.300, green.600)"
+    >
       <Header />
-      {/* TODO render data */}
-    </div>
+      {error ? (
+        <Alert status="error">{error}</Alert>
+      ) : !data ? (
+        <Box flex={'1'}>
+          <Center h={'80vh'}>
+            <Spinner color={'white'} />
+          </Center>
+        </Box>
+      ) : (
+        // TODO: replace with page
+        <Grid
+          templateColumns={{
+            base: '1fr',
+            lg: 'repeat(2, 1fr)',
+          }}
+          gridAutoRows="minmax(300px, auto)"
+          gap={16}
+          p={16}
+        >
+          <Chart data={data} />
+        </Grid>
+      )}
+    </Flex>
   );
 }
 

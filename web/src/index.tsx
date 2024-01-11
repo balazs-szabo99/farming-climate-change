@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import {
-  Box,
   ChakraProvider,
   extendTheme,
   withDefaultColorScheme,
@@ -39,9 +38,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <Box minH="100vh" bgGradient="linear(to-br, green.300, green.600)">
-        <App />
-      </Box>
+      <App />
     </ChakraProvider>
   </React.StrictMode>,
 );
