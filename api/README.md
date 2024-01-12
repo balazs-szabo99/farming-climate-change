@@ -14,6 +14,8 @@ For a better development experience and automated linting/formatting, we recomme
 
 - [Black](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance): A Python code formatter. It helps you keep your code clean and readable.
 
+Even with these extensions, the autofix of detected linting/formatting issues is currently not possible. The commit hooks are enforcing the correctness of the code, therefore manual fixes are needed.
+
 ## Activation
 
 1. Make sure you are in the `api` folder of the project.
@@ -88,28 +90,31 @@ curl http://127.0.0.1:5000/
 ### Charts
 
 1. Change of greenhouse gas emission and agricultural land from 1990
-* Data used: 
-  * Greenhouse gas emission
-    * Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
-    * CSV: `greenhouse_gas_emission.csv`
-  * Agricultural land
-    * Source: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
-    * CSV: `agricultural_land.csv`
-  
-2. Change of greenhouse gas and cereal yield from 1990 
-* Data used: 
-  * Greenhouse gas emission
-    * Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
-    * CSV: `greenhouse_gas_emission.csv`
-  * Cereal yield
-    * Source: https://data.worldbank.org/indicator/AG.YLD.CREL.KG
-    * CSV: `cereal_yield.csv`
+
+- Data used:
+  - Greenhouse gas emission
+    - Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
+    - CSV: `greenhouse_gas_emission.csv`
+  - Agricultural land
+    - Source: https://data.worldbank.org/indicator/AG.LND.AGRI.K2
+    - CSV: `agricultural_land.csv`
+
+2. Change of greenhouse gas and cereal yield from 1990
+
+- Data used:
+  - Greenhouse gas emission
+    - Source: https://data.worldbank.org/indicator/EN.ATM.GHGT.KT.CE
+    - CSV: `greenhouse_gas_emission.csv`
+  - Cereal yield
+    - Source: https://data.worldbank.org/indicator/AG.YLD.CREL.KG
+    - CSV: `cereal_yield.csv`
 
 3. Change of population and arable land from 1990
-* Data used: 
-  * Population
-    * Source: https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&start=1990
-    * CSV: `population.csv`
-  * Arable land
-    * Source: https://data.worldbank.org/indicator/AG.LND.ARBL.HA.PC
-    * CSV: `arable_land.csv`
+
+- Data used:
+  - Population
+    - Source: https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&start=1990
+    - CSV: `population.csv`
+  - Arable land
+    - Source: https://data.worldbank.org/indicator/AG.LND.ARBL.HA.PC
+    - CSV: `arable_land.csv`

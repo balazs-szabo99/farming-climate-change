@@ -22,9 +22,9 @@ fi
 
 # API checks
 cd api
-flake8 ./app.py || exit 1
-black --check ./app.py  || exit 1
-isort --check-only ./app.py  || exit 1
+flake8 --exclude=__pycache__,venv . || exit 1
+black --check . || exit 1
+isort --check-only .  || exit 1
 
 # Front-end checks
 cd ../web
