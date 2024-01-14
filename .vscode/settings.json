@@ -18,6 +18,7 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "python.defaultInterpreterPath": "${workspaceFolder}/api/venv/bin/python",
   "eslint.workingDirectories": [
     {
       "mode": "auto"
