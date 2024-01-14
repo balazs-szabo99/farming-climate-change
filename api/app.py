@@ -15,7 +15,9 @@ def index():
 @app.route("/landing")
 def landing():
     emissionsAndLandData = PreprocessData.emissionsAndLand()
-    return emissionsAndLandData
+    emissionAndCerealYieldData = PreprocessData.emissionAndCerealYield()
+    populationAndArableLand = PreprocessData.populationAndArableLand()
+    return [emissionsAndLandData, emissionAndCerealYieldData, populationAndArableLand]
 
 
 if __name__ == "__main__":
