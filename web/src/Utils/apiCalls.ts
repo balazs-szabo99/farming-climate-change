@@ -6,7 +6,7 @@ import ApiService from './ApiService';
  * @returns A promise that resolves to the landing data, or an object with an 'error' property if the request fails.
  */
 export const fetchLandingData = (): Promise<
-  LandingData | { error: string }
+  LandingData[] | { error: string }
 > => {
   return ApiService.get('/landing');
 };
