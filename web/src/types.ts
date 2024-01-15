@@ -5,7 +5,6 @@ export type LandingData = {
   data: {
     'Country Name': string;
     Year: string;
-    Emissions: number;
-    Land: number;
+    [key: string]: string | number;
   }[];
 };

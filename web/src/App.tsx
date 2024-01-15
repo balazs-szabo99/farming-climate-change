@@ -8,7 +8,7 @@ import Header from './Components/Header';
 import Chart from './Components/Chart';
 
 function App() {
-  const [data, setData] = useState<LandingData>();
+  const [data, setData] = useState<LandingData[]>();
   const [error, setError] = useState<string>();
 
   useEffect(() => {
@@ -50,7 +50,9 @@ function App() {
           gap={16}
           p={16}
         >
-          <Chart data={data} />
+          {data.map((landingData, index) => (
+            <Chart key={index} data={landingData} />
+          ))}
         </Grid>
       )}
     </Flex>

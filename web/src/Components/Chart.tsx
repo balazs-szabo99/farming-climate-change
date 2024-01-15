@@ -15,8 +15,13 @@ import { LandingData } from '../types';
  */
 const Chart = ({ data }: { data: LandingData }) => {
   const chartData = data.data.map((item) => {
-    return { name: item.Year, emissions: item.Emissions, land: item.Land };
+    const { Year, 'Country Name': countryName, ...rest } = item;
+    return {
+      name: Year,
+      ...rest,
+    };
   });
+  const keys = Object.keys(chartData[0] || {}).filter((key) => key !== 'name');
 
   return (
     <Box
@@ -44,7 +49,7 @@ const Chart = ({ data }: { data: LandingData }) => {
           <YAxis
             yAxisId="left"
             orientation="left"
-            tickFormatter={(value) => `${value / 1000000}`}
+            tickFormatter={(value) => `${value}`}
             label={{
               value: 'Millions',
               angle: -90,
@@ -55,7 +60,7 @@ const Chart = ({ data }: { data: LandingData }) => {
           <YAxis
             yAxisId="right"
             orientation="right"
-            tickFormatter={(value) => `${value / 1000000}`}
+            tickFormatter={(value) => `${value}`}
             label={{
               value: 'Millions',
               angle: -90,
@@ -64,18 +69,17 @@ const Chart = ({ data }: { data: LandingData }) => {
             }}
           />
           <Tooltip />
-          <Line
-            type={'monotone'}
-            yAxisId={'left'}
-            dataKey={'emissions'}
-            stroke={'#8884d8'}
-          />
-          <Line
-            type={'monotone'}
-            yAxisId={'right'}
-            dataKey={'land'}
-            stroke={'#82ca9d'}
-          />
+          {keys.map((key, index) => (
+            <Line
+              key={index}
+              type={'monotone'}
+              yAxisId={index % 2 === 0 ? 'left' : 'right'}
+              dataKey={key}
+              stroke={`#${((Math.random() * 0x777777 + 0x888888) | 0).toString(
+                16,
+              )}`}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
       <Box pt={6} px={4}>
