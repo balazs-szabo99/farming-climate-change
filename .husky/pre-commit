@@ -22,9 +22,9 @@ fi
 
 # API checks
 cd api
-black . || exit 1
 flake8 --max-line-length=88 --exclude=__pycache__,venv . || exit 1
-isort .  || exit 1
+black --check . || exit 1
+isort --check-only .  || exit 1
 
 # Front-end checks
 cd ../web
