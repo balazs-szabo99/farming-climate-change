@@ -53,11 +53,14 @@ const Chart = ({ data }: { data: LandingData }) => {
             orientation="left"
             tickFormatter={formatTickValue}
             label={{
-              value: 'Millions',
+              value:
+                data.units && data.units[keys[0]] ? data.units[keys[0]] : '',
               angle: -90,
               position: 'insideLeft',
-              dy: 25,
               dx: -10,
+              style: {
+                textAnchor: 'middle',
+              },
             }}
           />
           <YAxis
@@ -65,11 +68,14 @@ const Chart = ({ data }: { data: LandingData }) => {
             orientation="right"
             tickFormatter={formatTickValue}
             label={{
-              value: 'Millions',
+              value:
+                data.units && data.units[keys[1]] ? data.units[keys[1]] : '',
               angle: -90,
               position: 'insideRight',
-              dy: -25,
               dx: 10,
+              style: {
+                textAnchor: 'middle',
+              },
             }}
           />
           <Tooltip />
