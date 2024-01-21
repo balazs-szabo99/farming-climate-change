@@ -7,4 +7,7 @@ export type LandingData = {
     Year: string;
     [key: string]: string | number;
   }[];
+  units: {
+    [key: string]: string;
+  };
 };

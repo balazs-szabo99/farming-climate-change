@@ -2,6 +2,8 @@ import json
 
 import pandas as pd
 
+from constants import chart_info, units
+
 
 class PreprocessData:
     def emissionsAndLand(country="World"):
@@ -22,7 +24,7 @@ class PreprocessData:
             id_vars=["Country Name"],
             value_vars=[col for col in land.columns[:-2] if "YR" in col],
             var_name="Year",
-            value_name="Land",
+            value_name="Agricultural Land",
         )
 
         # Reformat Year "XXXX [YRXXXX]" column to "XXXX"
@@ -34,7 +36,9 @@ class PreprocessData:
 
         # Convert the 'Emissions' and 'Land' columns to numeric
         data["Emissions"] = pd.to_numeric(data["Emissions"], errors="coerce")
-        data["Land"] = pd.to_numeric(data["Land"], errors="coerce")
+        data["Agricultural Land"] = pd.to_numeric(
+            data["Agricultural Land"], errors="coerce"
+        )
 
         # Create world data
         world_data = data.groupby("Year").sum().round(2).reset_index()
@@ -45,22 +49,20 @@ class PreprocessData:
 
         # Filter data by country argument
         data = data.query("`Country Name` == @country")
-        # Round the 'Emissions' and 'Land' columns to 2 decimal places
-        data[["Emissions", "Land"]] = data[["Emissions", "Land"]].round(2)
+        # Round the 'Emissions' and 'Agricultural Land' columns to 2 decimal places
+        data[["Emissions", "Agricultural Land"]] = data[
+            ["Emissions", "Agricultural Land"]
+        ].round(2)
 
         # Return the data as a dictionary
         return {
-            "title": "Change of greenhouse gas emission and agricultural land",
-            "description": (
-                "This chart represents the change in greenhouse gas emissions and "
-                "agricultural land use over time for a selected country. The "
-                "'Emissions' data indicates the total greenhouse gas emissions in "
-                "kilotonnes, while the 'Land' data represents the total agricultural "
-                "land area in square kilometers. By visualizing these two factors "
-                "together, we can gain insights into the relationship between "
-                "agricultural practices and their impact on the environment."
-            ),
+            "title": chart_info["emissions_and_land"]["title"],
+            "description": chart_info["emissions_and_land"]["description"],
             "data": json.loads(data.to_json(orient="records", double_precision=2)),
+            "units": {
+                "Emissions": units["Emissions"],
+                "Agricultural Land": units["Agricultural Land"],
+            },
         }
 
     def emissionAndCerealYield(country="World"):
@@ -109,17 +111,13 @@ class PreprocessData:
 
         # Return the data as a dictionary
         return {
-            "title": "Change of greenhouse gas emission and cereal yield",
-            "description": (
-                "This chart represents the change in greenhouse gas emissions and "
-                "cereal yield over time for a selected country. The 'Emissions' "
-                "data indicates the total greenhouse gas emissions in kilotonnes, "
-                "while the 'Cereal' data represents the total cereal yield in kg "
-                "per hectare. By visualizing these two factors together, we can gain "
-                "insights into the relationship between agricultural productivity and  "
-                "environmental impact."
-            ),
+            "title": chart_info["emissions_and_cereal_yield"]["title"],
+            "description": chart_info["emissions_and_cereal_yield"]["description"],
             "data": json.loads(data.to_json(orient="records", double_precision=2)),
+            "units": {
+                "Emissions": units["Emissions"],
+                "Cereal": units["Cereal"],
+            },
         }
 
     def populationAndArableLand(country="World"):
@@ -140,7 +138,7 @@ class PreprocessData:
             id_vars=["Country Name"],
             value_vars=[col for col in land.columns[:-2] if "YR" in col],
             var_name="Year",
-            value_name="Land",
+            value_name="Arable Land",
         )
 
         # Reformat Year "XXXX [YRXXXX]" column to "XXXX"
@@ -152,7 +150,7 @@ class PreprocessData:
 
         # Convert the 'Population' and 'Land' columns to numeric
         data["Population"] = pd.to_numeric(data["Population"], errors="coerce")
-        data["Land"] = pd.to_numeric(data["Land"], errors="coerce")
+        data["Arable Land"] = pd.to_numeric(data["Arable Land"], errors="coerce")
 
         # Create world data
         world_data = data.groupby("Year").sum().round(2).reset_index()
@@ -163,20 +161,18 @@ class PreprocessData:
 
         # Filter data by country argument
         data = data.query("`Country Name` == @country")
-        # Round the 'Population' and 'Land' columns to 2 decimal places
-        data[["Population", "Land"]] = data[["Population", "Land"]].round(2)
+        # Round the 'Population' and 'Arable Land' columns to 2 decimal places
+        data[["Population", "Arable Land"]] = data[["Population", "Arable Land"]].round(
+            2
+        )
 
         # Return the data as a dictionary
         return {
-            "title": "Change of population and arable land",
-            "description": (
-                "This chart represents the change in population and "
-                "arable land over time for a selected country. The 'Population' "
-                "data indicates the total population, while "
-                "the 'Land' data represents the total arable land area in hectares "
-                "per person. By visualizing these two factors together, we can gain "
-                "insights into the availability of agricultural resources and "
-                "potential challenges related to food production and land use."
-            ),
+            "title": chart_info["population_and_arable_land"]["title"],
+            "description": chart_info["population_and_arable_land"]["description"],
             "data": json.loads(data.to_json(orient="records", double_precision=2)),
+            "units": {
+                "Population": units["Population"],
+                "Arable Land": units["Arable Land"],
+            },
         }
