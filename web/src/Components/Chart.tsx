@@ -8,7 +8,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+
 import { LandingData } from '../types';
+import { formatTickValue } from '../util';
 
 /**
  * TODO: refactor
@@ -49,23 +51,25 @@ const Chart = ({ data }: { data: LandingData }) => {
           <YAxis
             yAxisId="left"
             orientation="left"
-            tickFormatter={(value) => `${value}`}
+            tickFormatter={formatTickValue}
             label={{
               value: 'Millions',
               angle: -90,
               position: 'insideLeft',
               dy: 25,
+              dx: -10,
             }}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
-            tickFormatter={(value) => `${value}`}
+            tickFormatter={formatTickValue}
             label={{
               value: 'Millions',
               angle: -90,
               position: 'insideRight',
               dy: -25,
+              dx: 10,
             }}
           />
           <Tooltip />
