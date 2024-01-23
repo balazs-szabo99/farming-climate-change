@@ -42,12 +42,18 @@ const Dropdown: FC<DropdownProps> = ({ selected, options, onChange }) => {
         <MenuButton
           as={Button}
           rightIcon={isOpen ? <BsChevronUp /> : <BsChevronDown />}
+          fontSize={'sm'}
+          px={2}
         >
           {selected}
         </MenuButton>
-        <MenuList w={'min'}>
+        <MenuList>
           {options.map((option) => (
-            <MenuItem key={option} onClick={() => handleLimitChange(option)}>
+            <MenuItem
+              key={option}
+              onClick={() => handleLimitChange(option)}
+              bg={option === selected ? 'brand.300' : undefined}
+            >
               {option}
             </MenuItem>
           ))}

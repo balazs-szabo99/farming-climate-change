@@ -1,4 +1,5 @@
-import { Box, Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Box, Spacer, Text } from '@chakra-ui/react';
 import {
   LineChart,
   Line,
@@ -11,11 +12,13 @@ import {
 
 import { LandingData } from '../types';
 import { formatTickValue } from '../util';
+import Dropdown from './Dropdown';
 
 /**
  * TODO: refactor
  */
 const Chart = ({ data }: { data: LandingData }) => {
+  const [selectedCountryName, setSelectedCountryName] = useState('World');
   const chartData = data.data.map((item) => {
     const { Year, 'Country Name': countryName, ...rest } = item;
     return {
@@ -24,18 +27,29 @@ const Chart = ({ data }: { data: LandingData }) => {
     };
   });
   const keys = Object.keys(chartData[0] || {}).filter((key) => key !== 'name');
+  const dropdownOptions = ['World', 'Austria', 'Germany', 'Hungary']; // TODO: get from API
 
   return (
     <Box
       width={'100%'}
       height={'100%'}
       p={4}
-      pr={8}
       borderWidth={1}
       borderRadius={'lg'}
       overflow={'hidden'}
       bg={'white'}
     >
+      <Box display={'flex'} p={2} mb={4} alignItems={'center'}>
+        <Text fontSize={'xl'} fontWeight={'medium'}>
+          {data.title}
+        </Text>
+        <Spacer />
+        <Dropdown
+          selected={selectedCountryName}
+          options={dropdownOptions}
+          onChange={setSelectedCountryName}
+        />
+      </Box>
       <ResponsiveContainer width="100%" height="100%" maxHeight={400}>
         <LineChart
           data={chartData}
@@ -93,9 +107,6 @@ const Chart = ({ data }: { data: LandingData }) => {
         </LineChart>
       </ResponsiveContainer>
       <Box pt={6} px={4}>
-        <Text fontSize={'xl'} fontWeight={'medium'} mb={2}>
-          {data.title}
-        </Text>
         <Text fontSize={'md'} mb={4}>
           {data.description}
         </Text>
