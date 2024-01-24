@@ -13,15 +13,11 @@ def index():
 
 @app.route("/landing")
 def landing():
-    emissionsAndLandData = PreprocessData.emissionsAndLand()
-    emissionAndCerealYieldData = PreprocessData.emissionAndCerealYield()
-    populationAndArableLand = PreprocessData._preprocess_data(
-        file1="population",
-        file2="arable_land",
-        indicator1="Population",
-        indicator2="Arable Land",
-        info="population_and_arable_land",
-    )
+    preprocessor = PreprocessData()
+    emissionsAndLandData = preprocessor.emissionsAndLand()
+    emissionAndCerealYieldData = preprocessor.emissionAndCerealYield()
+    populationAndArableLand = preprocessor.populationAndArableLand()
+
     return [emissionsAndLandData, emissionAndCerealYieldData, populationAndArableLand]
 
 
