@@ -1,6 +1,7 @@
 import json
 
 import pandas as pd
+
 from constants import chart_info, units
 
 
@@ -83,7 +84,7 @@ class PreprocessData:
         data = data.query("`Country Name` == @country")
 
         # Round the 'indicator1' and 'indicator2' columns to 2 decimal places
-        data[[indicator1, indicator2]] = data[[indicator1, indicator2]].round(2)
+        data.loc[:, [indicator1, indicator2]] = data[[indicator1, indicator2]].round(2)
 
         # Return the data as a dictionary
         return {
