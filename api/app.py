@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-
 from pre_process_data import PreprocessData
 
 app = Flask(__name__)
@@ -14,9 +13,11 @@ def index():
 
 @app.route("/landing")
 def landing():
-    emissionsAndLandData = PreprocessData.emissionsAndLand()
-    emissionAndCerealYieldData = PreprocessData.emissionAndCerealYield()
-    populationAndArableLand = PreprocessData.populationAndArableLand()
+    preprocessor = PreprocessData()
+    emissionsAndLandData = preprocessor.emissionsAndLand()
+    emissionAndCerealYieldData = preprocessor.emissionAndCerealYield()
+    populationAndArableLand = preprocessor.populationAndArableLand()
+
     return [emissionsAndLandData, emissionAndCerealYieldData, populationAndArableLand]
 
 
