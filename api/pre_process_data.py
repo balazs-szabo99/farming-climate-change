@@ -12,6 +12,7 @@ class PreprocessData:
             indicator1="Emissions",
             indicator2="Agricultural Land",
             info="emissions_and_land",
+            country=country,
         )
 
     def emissionAndCerealYield(self, country="World"):
@@ -21,6 +22,7 @@ class PreprocessData:
             indicator1="Emissions",
             indicator2="Cereal",
             info="emissions_and_cereal_yield",
+            country=country,
         )
 
     def populationAndArableLand(self, country="World"):
@@ -30,6 +32,7 @@ class PreprocessData:
             indicator1="Population",
             indicator2="Arable Land",
             info="population_and_arable_land",
+            country=country,
         )
 
     def __preprocess_data(
