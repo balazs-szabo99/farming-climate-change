@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 
 import { LandingData } from '../types';
-import { formatTickValue } from '../util';
+import { formatTickValue } from '../Utils/util';
 import Dropdown from './Dropdown';
 
 const Chart = ({

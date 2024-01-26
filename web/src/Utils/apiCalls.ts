@@ -1,15 +1,26 @@
 import { LandingData } from '../types';
 import ApiService from './ApiService';
 
-/**
- * Fetches the landing data.
- * @returns A promise that resolves to the landing data, or an object with an 'error' property if the request fails.
- */
-// FIXME: create seperate api calls for each chart
-export const fetchLandingData = async (
-  country?: string,
+export const fetchEmissionsAndLandData = async (
+  country: string,
 ): Promise<LandingData | { error: string }> => {
   return ApiService.get(
-    country ? '/landing?country=' + encodeURIComponent(country) : '/landing',
+    '/emissionsAndLandData?country=' + encodeURIComponent(country),
+  );
+};
+
+export const fetchEmissionAndCerealYieldData = async (
+  country: string,
+): Promise<LandingData | { error: string }> => {
+  return ApiService.get(
+    '/emissionAndCerealYieldData?country=' + encodeURIComponent(country),
+  );
+};
+
+export const fetchPopulationAndArableLandData = async (
+  country: string,
+): Promise<LandingData | { error: string }> => {
+  return ApiService.get(
+    '/populationAndArableLand?country=' + encodeURIComponent(country),
   );
 };

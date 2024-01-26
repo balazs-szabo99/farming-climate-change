@@ -1,9 +1,12 @@
 import { Flex, Grid } from '@chakra-ui/react';
 
-import { fetchLandingData } from './Utils/apiCalls';
-
 import Header from './Components/Header';
 import Chart from './Components/Chart';
+import {
+  fetchEmissionAndCerealYieldData,
+  fetchEmissionsAndLandData,
+  fetchPopulationAndArableLandData,
+} from './Utils/apiCalls';
 
 function App() {
   return (
@@ -22,8 +25,9 @@ function App() {
         gap={16}
         p={16}
       >
-        <Chart fetchData={fetchLandingData} />
-        {/* TODO: add rest of charts */}
+        <Chart fetchData={fetchEmissionsAndLandData} />
+        <Chart fetchData={fetchEmissionAndCerealYieldData} />
+        <Chart fetchData={fetchPopulationAndArableLandData} />
       </Grid>
     </Flex>
   );
