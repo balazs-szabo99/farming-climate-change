@@ -1,12 +1,26 @@
 import { LandingData } from '../types';
 import ApiService from './ApiService';
 
-/**
- * Fetches the landing data.
- * @returns A promise that resolves to the landing data, or an object with an 'error' property if the request fails.
- */
-export const fetchLandingData = (): Promise<
-  LandingData[] | { error: string }
-> => {
-  return ApiService.get('/landing');
+export const fetchEmissionsAndLandData = async (
+  country: string,
+): Promise<LandingData | { error: string }> => {
+  return ApiService.get(
+    '/emissionsAndLandData?country=' + encodeURIComponent(country),
+  );
+};
+
+export const fetchEmissionAndCerealYieldData = async (
+  country: string,
+): Promise<LandingData | { error: string }> => {
+  return ApiService.get(
+    '/emissionAndCerealYieldData?country=' + encodeURIComponent(country),
+  );
+};
+
+export const fetchPopulationAndArableLandData = async (
+  country: string,
+): Promise<LandingData | { error: string }> => {
+  return ApiService.get(
+    '/populationAndArableLand?country=' + encodeURIComponent(country),
+  );
 };
