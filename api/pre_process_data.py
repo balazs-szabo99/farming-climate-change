@@ -6,10 +6,15 @@ from constants import chart_info, units
 
 
 class PreprocessData:
+    def __init__(self, from_year="1990"):
+        self.from_year = from_year
+
     def emissionsAndLand(self, country="World"):
-        return self.__preprocess_data(
-            file1="greenhouse_gas_emission",
-            file2="agricultural_land",
+        emission_df = pd.read_csv("data/greenhouse_gas_emission.csv")
+        agricultural_land_df = pd.read_csv("data/agricultural_land.csv")
+        return self.__process_data(
+            df1=emission_df,
+            df2=agricultural_land_df,
             indicator1="Emissions",
             indicator2="Agricultural Land",
             info="emissions_and_land",
@@ -17,9 +22,11 @@ class PreprocessData:
         )
 
     def emissionAndCerealYield(self, country="World"):
-        return self.__preprocess_data(
-            file1="greenhouse_gas_emission",
-            file2="cereal_yield",
+        emission_df = pd.read_csv("data/greenhouse_gas_emission.csv")
+        cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
+        return self.__process_data(
+            df1=emission_df,
+            df2=cereal_yield_df,
             indicator1="Emissions",
             indicator2="Cereal",
             info="emissions_and_cereal_yield",
@@ -27,37 +34,34 @@ class PreprocessData:
         )
 
     def populationAndArableLand(self, country="World"):
-        return self.__preprocess_data(
-            file1="population",
-            file2="arable_land",
+        population_df = pd.read_csv("data/population.csv")
+        arable_land_df = pd.read_csv("data/arable_land.csv")
+        return self.__process_data(
+            df1=population_df,
+            df2=arable_land_df,
             indicator1="Population",
             indicator2="Arable Land",
             info="population_and_arable_land",
             country=country,
         )
 
-    def __preprocess_data(
-        self, file1, file2, indicator1, indicator2, info, country="World"
-    ):
+    def __process_data(self, df1, df2, indicator1, indicator2, info, country="World"):
         # File names = the name of the file containing data
         # Indicators = name of the value that you use in the given dataframe
         # Info = Given key of the chart_info dictionary that you are interested in
-        # Load data
-        data1 = pd.read_csv(f"data/{file1}.csv")
-        data2 = pd.read_csv(f"data/{file2}.csv")
 
         # Reshape the data1 DF from wide to long format, keep necessary columns only
-        data1 = data1.melt(
+        data1 = df1.melt(
             id_vars=["Country Name"],
-            value_vars=[col for col in data1.columns[:-2] if "YR" in col],
+            value_vars=[col for col in df1.columns[:-2] if "YR" in col],
             var_name="Year",
             value_name=indicator1,
         )
 
         # Reshape the data2 DF from wide to long format, keep necessary columns only
-        data2 = data2.melt(
+        data2 = df2.melt(
             id_vars=["Country Name"],
-            value_vars=[col for col in data2.columns[:-2] if "YR" in col],
+            value_vars=[col for col in df2.columns[:-2] if "YR" in col],
             var_name="Year",
             value_name=indicator2,
         )
@@ -72,6 +76,9 @@ class PreprocessData:
         # Convert the 'indicator1' and 'indicator2' columns to numeric
         data[indicator1] = pd.to_numeric(data[indicator1], errors="coerce")
         data[indicator2] = pd.to_numeric(data[indicator2], errors="coerce")
+
+        # Filter data by years starting from self.from_year
+        data = data[data["Year"].astype(int) >= int(self.from_year)]
 
         # Create world data
         world_data = data.groupby("Year").sum().round(2).reset_index()
