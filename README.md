@@ -51,6 +51,24 @@ This app aims to provide a representation of the impact of climate change on agr
 
 - Comparison of the carbon sequestration potential of different crops and farming methods.
 
+## Developer Guide
+
+### Branch Naming Convention
+
+We use a very basic branch naming convention: `functionality-or-fix-you-did-with-dashes`.
+Best case is a verb or adjective + functionality.
+
+#### Examples
+
+- `new_functionality`, but `new-functionality`
+- `functionality`, but `add-functionality` or `fix-functionality`
+
+No commit/push to `main` branch is available. This is enforced by the commit hooks.
+
+### Conventional Commits
+
+For committing, we use conventional commits, which is enforced by the commit hooks. Without scope, just type, description, and optional body. More details can be found at [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
 ## Credits
 
 ### Icon

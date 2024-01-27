@@ -82,6 +82,33 @@ Example using curl:
 curl http://127.0.0.1:5000/
 ```
 
+## Developer Guide
+
+### Docstring Template
+
+The following docstring template should be used (Google docstring format):
+
+```python
+def google_docstrings(num1, num2) -> int:
+    """Add up two integer numbers.
+
+    This function simply wraps the ``+`` operator, and does not
+    do anything interesting, except for illustrating what
+    the docstring of a very simple function looks like.
+
+    Args:
+        num1 (int) : First number to add.
+        num2 (int) : Second number to add.
+
+    Returns:
+        The sum of ``num1`` and ``num2``.
+
+    Raises:
+        AnyError: If anything bad happens.
+    """
+    return num1 + num2
+```
+
 ## Data Collection & Analysis
 
 1. Identification of specific data relevant to climate change
