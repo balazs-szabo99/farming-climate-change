@@ -52,7 +52,7 @@ const Dropdown: FC<DropdownProps> = ({ selected, options, onChange }) => {
             <MenuItem
               key={option}
               onClick={() => handleLimitChange(option)}
-              bg={option === selected ? 'brand.300' : undefined}
+              bg={option === selected ? 'green.300' : undefined}
             >
               {option}
             </MenuItem>
