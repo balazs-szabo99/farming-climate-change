@@ -18,13 +18,10 @@ for col in data.columns[1:]:
 mean_emissions = data.loc[:, data.columns != "Country Name"].mean(axis=1)
 
 # Fill the missing values with the mean emissions
-data = data.T.fillna(mean_emissions).T
-data = data.dropna(subset=data.columns[1:], how="all")
-
-# Convert year columns to numeric type
 for col in data.columns[1:]:
-    data[col] = pd.to_numeric(data[col])
+    data[col] = data[col].fillna(mean_emissions)
 
+data = data.dropna(subset=data.columns[1:], how="all")
 data.set_index("Country Name", inplace=True)
 
 
