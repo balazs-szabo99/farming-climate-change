@@ -47,6 +47,20 @@ With the virtual environment activated, you can install the required dependencie
 pip install -r requirements.txt
 ```
 
+## Adding New Dependencies
+
+1. Install needed dependencies:
+
+```
+pip install pkg_name
+```
+
+2. Add dependency to `requirements.txt`:
+
+```
+pip freeze > requirements.txt
+```
+
 ## Running the API
 
 1. Make sure you are in the `api` folder of the project.
