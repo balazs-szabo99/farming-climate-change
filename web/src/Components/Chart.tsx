@@ -1,5 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Alert, Box, Center, Spacer, Spinner, Text } from '@chakra-ui/react';
+import { ReactNode, useEffect, useState } from 'react';
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Spacer,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import {
   LineChart,
   Line,
@@ -8,7 +16,11 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  BarChart,
+  Bar,
 } from 'recharts';
+import { BsBarChartFill } from 'react-icons/bs';
+import { GrLineChart } from 'react-icons/gr';
 
 import { LandingData } from '../types';
 import { formatTickValue } from '../Utils/util';
@@ -20,6 +32,7 @@ const Chart = ({
   fetchData: (country: string) => Promise<LandingData | { error: string }>;
 }) => {
   const [selectedCountry, setSelectedCountry] = useState('World');
+  const [chartType, setChartType] = useState('line');
   const [data, setData] = useState<LandingData>();
   const [error, setError] = useState<string>();
   const chartData = data?.data?.map((item) => {
@@ -33,6 +46,61 @@ const Chart = ({
     (key) => key !== 'name',
   );
   const dropdownOptions = ['World', 'Austria', 'Germany', 'Hungary']; // TODO: get from API
+
+  const renderChart = (children: ReactNode) => {
+    if (chartType === 'line') {
+      return (
+        <LineChart
+          data={chartData}
+          margin={{
+            top: 5,
+            right: 20,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          {children}
+          {keys.map((key, index) => (
+            <Line
+              key={index}
+              type={'monotone'}
+              yAxisId={index % 2 === 0 ? 'left' : 'right'}
+              dataKey={key}
+              stroke={`#${((Math.random() * 0x777777 + 0x888888) | 0).toString(
+                16,
+              )}`}
+            />
+          ))}
+        </LineChart>
+      );
+    } else if (chartType === 'bar') {
+      return (
+        <BarChart
+          data={chartData}
+          margin={{
+            top: 5,
+            right: 20,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          {children}
+          {keys.map((key, index) => (
+            <Bar
+              key={index}
+              yAxisId={index % 2 === 0 ? 'left' : 'right'}
+              dataKey={key}
+              fill={`#${((Math.random() * 0x777777 + 0x888888) | 0).toString(
+                16,
+              )}`}
+            />
+          ))}
+        </BarChart>
+      );
+    } else {
+      return <></>;
+    }
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -67,11 +135,23 @@ const Chart = ({
         </Box>
       ) : (
         <>
-          <Box display={'flex'} p={2} mb={4} alignItems={'center'}>
+          <Box display={'flex'} p={2} mb={4} gap={2} alignItems={'center'}>
             <Text fontSize={'xl'} fontWeight={'medium'}>
               {data.title}
             </Text>
             <Spacer />
+            <Button
+              onClick={() => setChartType('line')}
+              isActive={chartType === 'line'}
+            >
+              <GrLineChart />
+            </Button>
+            <Button
+              onClick={() => setChartType('bar')}
+              isActive={chartType === 'bar'}
+            >
+              <BsBarChartFill />
+            </Button>
             <Dropdown
               selected={selectedCountry}
               options={dropdownOptions}
@@ -79,65 +159,47 @@ const Chart = ({
             />
           </Box>
           <ResponsiveContainer width="100%" height="100%" maxHeight={400}>
-            <LineChart
-              data={chartData}
-              margin={{
-                top: 5,
-                right: 20,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid stroke={'#ccc'} strokeDasharray={'5 5'} />
-              <XAxis dataKey="name" dy={10} />
-              <YAxis
-                yAxisId="left"
-                orientation="left"
-                tickFormatter={formatTickValue}
-                label={{
-                  value:
-                    data.units && data.units[keys[0]]
-                      ? data.units[keys[0]]
-                      : '',
-                  angle: -90,
-                  position: 'insideLeft',
-                  dx: -10,
-                  style: {
-                    textAnchor: 'middle',
-                  },
-                }}
-              />
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                tickFormatter={formatTickValue}
-                label={{
-                  value:
-                    data.units && data.units[keys[1]]
-                      ? data.units[keys[1]]
-                      : '',
-                  angle: -90,
-                  position: 'insideRight',
-                  dx: 10,
-                  style: {
-                    textAnchor: 'middle',
-                  },
-                }}
-              />
-              <Tooltip />
-              {keys.map((key, index) => (
-                <Line
-                  key={index}
-                  type={'monotone'}
-                  yAxisId={index % 2 === 0 ? 'left' : 'right'}
-                  dataKey={key}
-                  stroke={`#${(
-                    (Math.random() * 0x777777 + 0x888888) |
-                    0
-                  ).toString(16)}`}
+            {renderChart(
+              <>
+                <CartesianGrid stroke={'#ccc'} strokeDasharray={'5 5'} />
+                <XAxis dataKey="name" dy={10} />
+                <YAxis
+                  yAxisId="left"
+                  orientation="left"
+                  tickFormatter={formatTickValue}
+                  label={{
+                    value:
+                      data.units && data.units[keys[0]]
+                        ? data.units[keys[0]]
+                        : '',
+                    angle: -90,
+                    position: 'insideLeft',
+                    dx: -10,
+                    style: {
+                      textAnchor: 'middle',
+                    },
+                  }}
                 />
-              ))}
-            </LineChart>
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  tickFormatter={formatTickValue}
+                  label={{
+                    value:
+                      data.units && data.units[keys[1]]
+                        ? data.units[keys[1]]
+                        : '',
+                    angle: -90,
+                    position: 'insideRight',
+                    dx: 10,
+                    style: {
+                      textAnchor: 'middle',
+                    },
+                  }}
+                />
+                <Tooltip />
+              </>,
+            )}
           </ResponsiveContainer>
           <Box pt={6} px={4}>
             <Text fontSize={'md'} mb={4}>

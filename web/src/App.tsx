@@ -13,7 +13,7 @@ function App() {
     <Flex
       direction={'column'}
       minH={'100vh'}
-      bgGradient="linear(to-br, green.300, green.600)"
+      bgGradient="linear(to-br, green.500, green.800)"
     >
       <Header />
       <Grid

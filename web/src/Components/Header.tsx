@@ -8,7 +8,7 @@ const Header: FC = () => {
       justifyContent="center"
       alignItems="center"
       padding="1.5rem"
-      bg="green.500"
+      bg="green.700"
       data-testid={'header'}
     >
       <Text fontSize="2xl" fontWeight="bold" color="white">
