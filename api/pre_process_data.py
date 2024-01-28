@@ -46,10 +46,23 @@ class PreprocessData:
         )
 
     def __process_data(self, df1, df2, indicator1, indicator2, info, country="World"):
-        # File names = the name of the file containing data
-        # Indicators = name of the value that you use in the given dataframe
-        # Info = Given key of the chart_info dictionary that you are interested in
+        """Process two input DataFrames
 
+        This function reshapes, filters, and merges two input Dataframes representing
+        different indicators.
+
+        Args:
+        df1 (pd.DataFrame): The first DataFrame containing indicator1 data.
+        df2 (pd.DataFrame): The second DataFrame containing indicator2 data.
+        indicator1 (str): The name of the first indicator column.
+        indicator2 (str): The name of the second indicator column.
+        info (str): Key for chart information in the chart_info dictionary.
+        country (str, optional): The country to filter the data for
+        (default is "World").
+
+        Returns:
+          A dictionary containing processed data, suitable for chart generation.
+        """
         # Reshape the data1 DF from wide to long format, keep necessary columns only
         data1 = df1.melt(
             id_vars=["Country Name"],
@@ -70,15 +83,20 @@ class PreprocessData:
         data1["Year"] = data1["Year"].str.split(" ").str[0]
         data2["Year"] = data2["Year"].str.split(" ").str[0]
 
-        # Merge the data1 and data2 DF on 'Country Name' and 'Year'
-        data = pd.merge(data1, data2, how="inner", on=["Country Name", "Year"])
+        # Merge filtered data1 and data2 based on 'Country Name' and 'Year'
+        data = pd.merge(
+            data1[data1["Year"].astype(int) >= int(self.from_year)],
+            data2[data2["Year"].astype(int) >= int(self.from_year)],
+            how="inner",
+            on=["Country Name", "Year"],
+        )
+
+        # Filter data by country argument
+        data = data.query("`Country Name` == @country")
 
         # Convert the 'indicator1' and 'indicator2' columns to numeric
         data[indicator1] = pd.to_numeric(data[indicator1], errors="coerce")
         data[indicator2] = pd.to_numeric(data[indicator2], errors="coerce")
-
-        # Filter data by years starting from self.from_year
-        data = data[data["Year"].astype(int) >= int(self.from_year)]
 
         # Create world data
         world_data = data.groupby("Year").sum().round(2).reset_index()
@@ -86,9 +104,6 @@ class PreprocessData:
 
         # Add world data to the `data` dataframe
         data = pd.concat([data, world_data], ignore_index=True)
-
-        # Filter data by country argument
-        data = data.query("`Country Name` == @country")
 
         # Round the 'indicator1' and 'indicator2' columns to 2 decimal places
         data.loc[:, [indicator1, indicator2]] = data[[indicator1, indicator2]].round(2)
