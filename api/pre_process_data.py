@@ -12,18 +12,20 @@ class PreprocessData:
 
     def cerealYieldAndTemperatureData(self, country="World"):
         cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
-        temperature_df = pd.read_csv("data/temperature.csv")
+        temperature_df = pd.read_csv("data/temperature_change.csv")
         return self.__process_data(
             df1=cereal_yield_df,
             df2=temperature_df,
-            indicator1="Cereal Yield",
+            indicator1="Cereal",
             indicator2="Temperature",
             info="cereal_yield_and_temperature",
+            df1_world_calc_mode="sum",
+            df2_world_calc_mode="mean",
             country=country,
         )
 
     def temperatureAndWaterUsageData(self, country="World"):
-        temperature_df = pd.read_csv("data/temperature.csv")
+        temperature_df = pd.read_csv("data/temperature_change.csv")
         water_usage_df = self.__preprocess_water_data()
         return self.__process_data(
             df1=temperature_df,
@@ -31,34 +33,50 @@ class PreprocessData:
             indicator1="Temperature",
             indicator2="Water Usage",
             info="temperature_and_water_usage",
+            df1_world_calc_mode="mean",
+            df2_world_calc_mode="sum",
             country=country,
         )
 
     def greenhouseGasEmissionsAndTemperature(self, country="World"):
         emission_df = pd.read_csv("data/greenhouse_gas_emission.csv")
-        temperature_df = pd.read_csv("data/temperature.csv")
+        temperature_df = pd.read_csv("data/temperature_change.csv")
         return self.__process_data(
             df1=emission_df,
             df2=temperature_df,
             indicator1="Emissions",
             indicator2="Temperature",
             info="emissions_and_temperature",
+            df1_world_calc_mode="sum",
+            df2_world_calc_mode="mean",
             country=country,
         )
 
     def fertilizerAndCerealYield(self, country="World"):
         fertilizer_df = pd.read_csv("data/fertilizer.csv")
-        cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
+        cereal_yield_df = pd.read_csv("data/temperature_change.csv")
         return self.__process_data(
             df1=fertilizer_df,
             df2=cereal_yield_df,
             indicator1="Fertilizer",
             indicator2="Cereal",
             info="fertilizer_and_cereal_yield",
+            df1_world_calc_mode="sum",
+            df2_world_calc_mode="sum",
             country=country,
         )
 
-    def __process_data(self, df1, df2, indicator1, indicator2, info, country="World"):
+    def __process_data(
+        self,
+        df1,
+        df2,
+        indicator1,
+        indicator2,
+        info,
+        df1_world_calc_mode,
+        df2_world_calc_mode,
+        country="World",
+    ):
         """Process two input DataFrames
 
         This function reshapes, filters, and merges two input Dataframes representing
@@ -70,11 +88,20 @@ class PreprocessData:
         indicator1 (str): The name of the first indicator column.
         indicator2 (str): The name of the second indicator column.
         info (str): Key for chart information in the chart_info dictionary.
+        df1_world_calc_mode (str): Mode to calculate world data, options "sum"/"mean".
+        df2_world_calc_mode (str): Mode to calculate world data, options "sum"/"mean".
         country (str, optional): The country to filter the data for (default "World").
 
         Returns:
           A dictionary containing processed data, suitable for chart generation.
         """
+
+        if (df1_world_calc_mode != "sum" and df1_world_calc_mode != "mean") or (
+            df2_world_calc_mode != "sum" and df2_world_calc_mode != "mean"
+        ):
+            raise ValueError(
+                "Invalid world_calc_mode option, possible values are 'sum' or 'mean'"
+            )
 
         # Reshape the data1 DF from wide to long format, keep necessary columns only
         data1 = df1.melt(
@@ -111,7 +138,17 @@ class PreprocessData:
         data[indicator2] = pd.to_numeric(data[indicator2], errors="coerce")
 
         # Create world data
-        world_data = data.groupby("Year").sum().round(2).reset_index()
+        world_data = (
+            data.groupby("Year")
+            .agg(
+                {
+                    indicator1: df1_world_calc_mode,
+                    indicator2: df2_world_calc_mode,
+                }
+            )
+            .round(2)
+            .reset_index()
+        )
         world_data["Country Name"] = "World"
 
         # Add world data to the `data` dataframe
