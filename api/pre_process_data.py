@@ -129,3 +129,52 @@ class PreprocessData:
                 indicator2: units[indicator2],
             },
         }
+
+    def __preprocess_water_data(self):
+        """Preprocess water data
+
+        This function reads the total water usage (billion cubic meters) and
+        agricultural water usage (percentage of total) data, processes it to
+        return a dataframe containing the agricultural water usage in billion
+        cubic meters.
+
+        Returns:
+          Dataframe containing processed water data.
+        """
+
+        water_total_data = pd.read_csv("data/water_total.csv")
+        water_agro_data = pd.read_csv("data/water_agro.csv")
+
+        # print("water_total_data", water_total_data)
+        print("dtypes", water_total_data.dtypes)
+
+        # Reshape the water data from wide to long format
+        water_total_data = water_total_data.melt(
+            id_vars=["Country Name"],
+            value_vars=[
+                col for col in water_total_data.columns[:-2] if col.isnumeric()
+            ],
+            var_name="Year",
+            value_name="Water Usage",
+        )
+        water_agro_data = water_agro_data.melt(
+            id_vars=["Country Name"],
+            value_vars=[col for col in water_agro_data.columns[:-2] if col.isnumeric()],
+            var_name="Year",
+            value_name="Water Usage",
+        )
+
+        data = pd.merge(
+            water_total_data[
+                water_total_data["Year"].astype(int) >= int(self.from_year)
+            ],
+            water_agro_data[water_agro_data["Year"].astype(int) >= int(self.from_year)],
+            how="inner",
+            on=["Country Name", "Year"],
+        )
+
+        data = data.dropna(subset=["Water Usage_x", "Water Usage_y"])
+        data["Water Usage"] = data["Water Usage_x"] * (data["Water Usage_y"] / 100)
+        data = data.drop(["Water Usage_x", "Water Usage_y"], axis=1)
+
+        return data
