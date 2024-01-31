@@ -24,7 +24,7 @@ class PreprocessData:
 
     def temperatureAndWaterUsageData(self, country="World"):
         temperature_df = pd.read_csv("data/temperature.csv")
-        water_usage_df = pd.read_csv("data/water_usage.csv")
+        water_usage_df = self.__preprocess_water_data()
         return self.__process_data(
             df1=temperature_df,
             df2=water_usage_df,
@@ -79,13 +79,17 @@ class PreprocessData:
         # Reshape the data1 DF from wide to long format, keep necessary columns only
         data1 = df1.melt(
             id_vars=["Country Name"],
-            value_vars=[col for col in df1.columns[:-2] if "YR" in col],
+            value_vars=[
+                col for col in df1.columns[:-2] if "YR" in col or col.isnumeric()
+            ],
             var_name="Year",
             value_name=indicator1,
         )
         data2 = df2.melt(
             id_vars=["Country Name"],
-            value_vars=[col for col in df2.columns[:-2] if "YR" in col],
+            value_vars=[
+                col for col in df2.columns[:-2] if "YR" in col or col.isnumeric()
+            ],
             var_name="Year",
             value_name=indicator2,
         )
@@ -102,9 +106,6 @@ class PreprocessData:
             on=["Country Name", "Year"],
         )
 
-        # Filter data by country argument
-        data = data.query("`Country Name` == @country")
-
         # Convert the 'indicator1' and 'indicator2' columns to numeric
         data[indicator1] = pd.to_numeric(data[indicator1], errors="coerce")
         data[indicator2] = pd.to_numeric(data[indicator2], errors="coerce")
@@ -115,6 +116,9 @@ class PreprocessData:
 
         # Add world data to the `data` dataframe
         data = pd.concat([data, world_data], ignore_index=True)
+
+        # Filter data by country argument
+        data = data.query("`Country Name` == @country")
 
         # Round the 'indicator1' and 'indicator2' columns to 2 decimal places
         data.loc[:, [indicator1, indicator2]] = data[[indicator1, indicator2]].round(2)
