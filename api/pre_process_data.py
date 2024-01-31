@@ -6,42 +6,55 @@ from constants import chart_info, units
 
 
 class PreprocessData:
-    def __init__(self, from_year="1990"):
+    def __init__(self, from_year="1990", to_year="2020"):
         self.from_year = from_year
+        self.to_year = to_year
 
-    def emissionsAndLand(self, country="World"):
-        emission_df = pd.read_csv("data/greenhouse_gas_emission.csv")
-        agricultural_land_df = pd.read_csv("data/agricultural_land.csv")
+    def cerealYieldAndTemperatureData(self, country="World"):
+        cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
+        temperature_df = pd.read_csv("data/temperature.csv")
         return self.__process_data(
-            df1=emission_df,
-            df2=agricultural_land_df,
-            indicator1="Emissions",
-            indicator2="Agricultural Land",
-            info="emissions_and_land",
+            df1=cereal_yield_df,
+            df2=temperature_df,
+            indicator1="Cereal Yield",
+            indicator2="Temperature",
+            info="cereal_yield_and_temperature",
             country=country,
         )
 
-    def emissionAndCerealYield(self, country="World"):
+    def temperatureAndWaterUsageData(self, country="World"):
+        temperature_df = pd.read_csv("data/temperature.csv")
+        water_usage_df = pd.read_csv("data/water_usage.csv")
+        return self.__process_data(
+            df1=temperature_df,
+            df2=water_usage_df,
+            indicator1="Temperature",
+            indicator2="Water Usage",
+            info="temperature_and_water_usage",
+            country=country,
+        )
+
+    def greenhouseGasEmissionsAndTemperature(self, country="World"):
         emission_df = pd.read_csv("data/greenhouse_gas_emission.csv")
+        temperature_df = pd.read_csv("data/temperature.csv")
+        return self.__process_data(
+            df1=emission_df,
+            df2=temperature_df,
+            indicator1="Emissions",
+            indicator2="Temperature",
+            info="emissions_and_temperature",
+            country=country,
+        )
+
+    def fertilizerAndCerealYield(self, country="World"):
+        fertilizer_df = pd.read_csv("data/fertilizer.csv")
         cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
         return self.__process_data(
-            df1=emission_df,
+            df1=fertilizer_df,
             df2=cereal_yield_df,
-            indicator1="Emissions",
+            indicator1="Fertilizer",
             indicator2="Cereal",
-            info="emissions_and_cereal_yield",
-            country=country,
-        )
-
-    def populationAndArableLand(self, country="World"):
-        population_df = pd.read_csv("data/population.csv")
-        arable_land_df = pd.read_csv("data/arable_land.csv")
-        return self.__process_data(
-            df1=population_df,
-            df2=arable_land_df,
-            indicator1="Population",
-            indicator2="Arable Land",
-            info="population_and_arable_land",
+            info="fertilizer_and_cereal_yield",
             country=country,
         )
 
@@ -57,12 +70,12 @@ class PreprocessData:
         indicator1 (str): The name of the first indicator column.
         indicator2 (str): The name of the second indicator column.
         info (str): Key for chart information in the chart_info dictionary.
-        country (str, optional): The country to filter the data for
-        (default is "World").
+        country (str, optional): The country to filter the data for (default "World").
 
         Returns:
           A dictionary containing processed data, suitable for chart generation.
         """
+
         # Reshape the data1 DF from wide to long format, keep necessary columns only
         data1 = df1.melt(
             id_vars=["Country Name"],
@@ -70,8 +83,6 @@ class PreprocessData:
             var_name="Year",
             value_name=indicator1,
         )
-
-        # Reshape the data2 DF from wide to long format, keep necessary columns only
         data2 = df2.melt(
             id_vars=["Country Name"],
             value_vars=[col for col in df2.columns[:-2] if "YR" in col],

@@ -14,22 +14,28 @@ def index():
     return jsonify(message="Hello from Flask!")
 
 
-@app.route("/emissionsAndLandData")
-def emissions_and_land_data():
+@app.route("/cerealYieldAndTemperatureData")
+def cereal_yield_and_temperature_data():
     country = request.args.get("country", "World")
-    return preprocessor.emissionsAndLand(country)
+    return preprocessor.cerealYieldAndTemperatureData(country)
 
 
-@app.route("/emissionAndCerealYieldData")
-def emission_and_cereal_yield_data():
+@app.route("/temperatureAndWaterUsageData")
+def temperature_and_water_usage_data():
     country = request.args.get("country", "World")
-    return preprocessor.emissionAndCerealYield(country)
+    return preprocessor.temperatureAndWaterUsageData(country)
 
 
-@app.route("/populationAndArableLand")
-def population_and_arable_land():
+@app.route("/greenhouseGasEmissionsAndTemperature")
+def greenhouse_gas_emissions_and_temperature_data():
     country = request.args.get("country", "World")
-    return preprocessor.populationAndArableLand(country)
+    return preprocessor.greenhouseGasEmissionsAndTemperature(country)
+
+
+@app.route("/fertilizerAndCerealYield")
+def fertilizer_and_cereal_yield_data():
+    country = request.args.get("country", "World")
+    return preprocessor.fertilizerAndCerealYield(country)
 
 
 if __name__ == "__main__":
