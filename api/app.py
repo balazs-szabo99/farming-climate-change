@@ -14,13 +14,13 @@ def index():
     return jsonify(message="Hello from Flask!")
 
 
-@app.route("/cerealYieldAndTemperatureData")
+@app.route("/cerealYieldAndTemperature")
 def cereal_yield_and_temperature_data():
     country = request.args.get("country", "World")
     return preprocessor.cerealYieldAndTemperatureData(country)
 
 
-@app.route("/temperatureAndWaterUsageData")
+@app.route("/temperatureAndWaterUsage")
 def temperature_and_water_usage_data():
     country = request.args.get("country", "World")
     return preprocessor.temperatureAndWaterUsageData(country)

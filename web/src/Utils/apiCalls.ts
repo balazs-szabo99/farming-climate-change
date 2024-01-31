@@ -1,26 +1,35 @@
 import { LandingData } from '../types';
 import ApiService from './ApiService';
 
-export const fetchEmissionsAndLandData = async (
+export const fetchCerealYieldAndTemperatureData = async (
   country: string,
 ): Promise<LandingData | { error: string }> => {
   return ApiService.get(
-    '/emissionsAndLandData?country=' + encodeURIComponent(country),
+    '/cerealYieldAndTemperature?country=' + encodeURIComponent(country),
   );
 };
 
-export const fetchEmissionAndCerealYieldData = async (
+export const fetchTemperatureAndWaterUsageData = async (
   country: string,
 ): Promise<LandingData | { error: string }> => {
   return ApiService.get(
-    '/emissionAndCerealYieldData?country=' + encodeURIComponent(country),
+    '/temperatureAndWaterUsage?country=' + encodeURIComponent(country),
   );
 };
 
-export const fetchPopulationAndArableLandData = async (
+export const fetchGreenhouseGasEmissionsAndTemperatureData = async (
   country: string,
 ): Promise<LandingData | { error: string }> => {
   return ApiService.get(
-    '/populationAndArableLand?country=' + encodeURIComponent(country),
+    '/greenhouseGasEmissionsAndTemperature?country=' +
+      encodeURIComponent(country),
+  );
+};
+
+export const fetchFertilizerAndCerealYieldData = async (
+  country: string,
+): Promise<LandingData | { error: string }> => {
+  return ApiService.get(
+    '/fertilizerAndCerealYield?country=' + encodeURIComponent(country),
   );
 };

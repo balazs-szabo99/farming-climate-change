@@ -3,9 +3,10 @@ import { Flex, Grid } from '@chakra-ui/react';
 import Header from './Components/Header';
 import Chart from './Components/Chart';
 import {
-  fetchEmissionAndCerealYieldData,
-  fetchEmissionsAndLandData,
-  fetchPopulationAndArableLandData,
+  fetchCerealYieldAndTemperatureData,
+  fetchTemperatureAndWaterUsageData,
+  fetchGreenhouseGasEmissionsAndTemperatureData,
+  fetchFertilizerAndCerealYieldData,
 } from './Utils/apiCalls';
 
 function App() {
@@ -25,9 +26,10 @@ function App() {
         gap={16}
         p={16}
       >
-        <Chart fetchData={fetchEmissionsAndLandData} />
-        <Chart fetchData={fetchEmissionAndCerealYieldData} />
-        <Chart fetchData={fetchPopulationAndArableLandData} />
+        <Chart fetchData={fetchCerealYieldAndTemperatureData} />
+        <Chart fetchData={fetchTemperatureAndWaterUsageData} />
+        <Chart fetchData={fetchGreenhouseGasEmissionsAndTemperatureData} />
+        <Chart fetchData={fetchFertilizerAndCerealYieldData} />
       </Grid>
     </Flex>
   );
