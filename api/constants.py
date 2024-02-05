@@ -3,7 +3,7 @@ units = {
     "Emissions": "kilotonnes",
     "Fertilizer": "kg per hectare",
     "Temperature": "degrees Celsius",
-    "Water Usage": "cubic meters per person",
+    "Water Usage": "cubic meters",
 }
 
 chart_info = {
@@ -26,7 +26,7 @@ chart_info = {
             "water usage over time for a selected country. The 'Temperature' "
             "data indicates the temperature change with respect to the baseline "
             "in degrees Celsius, while the 'Water Usage' data represents the total "
-            "water usage in cubic meters per person. By visualizing these two "
+            "water usage in million cubic meters. By visualizing these two "
             "factors together, we can gain insights into the relationship between "
             "climate change and water usage."
         ),
