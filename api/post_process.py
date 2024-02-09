@@ -6,9 +6,8 @@ from constants import chart_info, units
 
 
 class PostProcess:
-    def __init__(self, from_year="1990", to_year="2020"):
+    def __init__(self, from_year="1990"):
         self.from_year = from_year
-        self.to_year = to_year
 
     def process(self, dfs, indicator1, indicator2, info):
         """
