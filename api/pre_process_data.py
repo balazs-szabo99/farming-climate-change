@@ -1,8 +1,4 @@
-import json
-
 import pandas as pd
-
-from constants import chart_info, units
 
 
 class PreprocessData:
@@ -13,150 +9,122 @@ class PreprocessData:
     def cerealYieldAndTemperatureData(self, country="World"):
         cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
         temperature_df = pd.read_csv("data/temperature_change.csv")
-        return self.__process_data(
-            df1=cereal_yield_df,
-            df2=temperature_df,
-            indicator1="Cereal",
-            indicator2="Temperature",
-            info="cereal_yield_and_temperature",
-            df1_world_calc_mode="sum",
-            df2_world_calc_mode="mean",
+        cereal_yield = self.__process_data(
+            df=cereal_yield_df,
+            indicator="Cereal",
+            world_calc_mode="sum",
             country=country,
         )
+        temperature = self.__process_data(
+            df=temperature_df,
+            indicator="Temperature",
+            world_calc_mode="mean",
+            country=country,
+        )
+        return [cereal_yield, temperature]
 
     def temperatureAndWaterUsageData(self, country="World"):
         temperature_df = pd.read_csv("data/temperature_change.csv")
         water_usage_df = self.__preprocess_water_data(country)
-        return self.__process_data(
-            df1=temperature_df,
-            df2=water_usage_df,
-            indicator1="Temperature",
-            indicator2="Water Usage",
-            info="temperature_and_water_usage",
-            df1_world_calc_mode="mean",
-            df2_world_calc_mode="sum",
+        temperature = self.__process_data(
+            df=temperature_df,
+            indicator="Temperature",
+            world_calc_mode="mean",
             country=country,
         )
+        water_usage = self.__process_data(
+            df=water_usage_df,
+            indicator="Water Usage",
+            world_calc_mode="sum",
+            country=country,
+        )
+        return [temperature, water_usage]
 
     def greenhouseGasEmissionsAndTemperature(self, country="World"):
         emission_df = pd.read_csv("data/greenhouse_gas_emission.csv")
         temperature_df = pd.read_csv("data/temperature_change.csv")
-        return self.__process_data(
-            df1=emission_df,
-            df2=temperature_df,
-            indicator1="Emissions",
-            indicator2="Temperature",
-            info="emissions_and_temperature",
-            df1_world_calc_mode="sum",
-            df2_world_calc_mode="mean",
+        emission = self.__process_data(
+            df=emission_df,
+            indicator="Emissions",
+            world_calc_mode="sum",
             country=country,
         )
+        temperature = self.__process_data(
+            df=temperature_df,
+            indicator="Temperature",
+            world_calc_mode="mean",
+            country=country,
+        )
+        return [emission, temperature]
 
     def fertilizerAndCerealYield(self, country="World"):
         fertilizer_df = pd.read_csv("data/fertilizer.csv")
         cereal_yield_df = pd.read_csv("data/cereal_yield.csv")
-        return self.__process_data(
-            df1=fertilizer_df,
-            df2=cereal_yield_df,
-            indicator1="Fertilizer",
-            indicator2="Cereal",
-            info="fertilizer_and_cereal_yield",
-            df1_world_calc_mode="mean",
-            df2_world_calc_mode="mean",
+        fertilizer = self.__process_data(
+            df=fertilizer_df,
+            indicator="Fertilizer",
+            world_calc_mode="sum",
             country=country,
         )
+        cereal_yield = self.__process_data(
+            df=cereal_yield_df,
+            indicator="Cereal",
+            world_calc_mode="sum",
+            country=country,
+        )
+        return [fertilizer, cereal_yield]
 
     def __process_data(
         self,
-        df1,
-        df2,
-        indicator1,
-        indicator2,
-        info,
-        df1_world_calc_mode,
-        df2_world_calc_mode,
+        df,
+        indicator,
+        world_calc_mode,
         country="World",
     ):
-        """Process two input DataFrames
-
-        This function reshapes, filters, and merges two input Dataframes representing
-        different indicators.
+        """
+        Process the data by reshaping, filtering, and rounding.
 
         Args:
-        df1 (pd.DataFrame): The first DataFrame containing indicator1 data.
-        df2 (pd.DataFrame): The second DataFrame containing indicator2 data.
-        indicator1 (str): The name of the first indicator column.
-        indicator2 (str): The name of the second indicator column.
-        info (str): Key for chart information in the chart_info dictionary.
-        df1_world_calc_mode (str): Mode to calculate world data, options "sum"/"mean".
-        df2_world_calc_mode (str): Mode to calculate world data, options "sum"/"mean".
-        country (str, optional): The country to filter the data for (default "World").
+          df (pandas.DataFrame): The input DataFrame containing the data.
+          indicator (str): The name of the indicator column.
+          world_calc_mode (str): The calculation mode for world data. 'sum' or 'mean'.
+          country (str, optional): The country to filter the data. Defaults to 'World'.
 
         Returns:
-          A dictionary containing processed data, suitable for chart generation.
+          pandas.DataFrame: The processed data DataFrame.
         """
 
-        if (df1_world_calc_mode != "sum" and df1_world_calc_mode != "mean") or (
-            df2_world_calc_mode != "sum" and df2_world_calc_mode != "mean"
-        ):
+        if world_calc_mode != "sum" and world_calc_mode != "mean":
             raise ValueError(
                 "Invalid world_calc_mode option, possible values are 'sum' or 'mean'"
             )
 
         # Reshape the data1 DF from wide to long format, keep necessary columns only
-        data1 = df1.melt(
+        data = df.melt(
             id_vars=["Country Name"],
             value_vars=[
-                col for col in df1.columns[:-2] if "YR" in col or col.isnumeric()
+                col for col in df.columns[:-2] if "YR" in col or col.isnumeric()
             ],
             var_name="Year",
-            value_name=indicator1,
-        )
-        data2 = df2.melt(
-            id_vars=["Country Name"],
-            value_vars=[
-                col for col in df2.columns[:-2] if "YR" in col or col.isnumeric()
-            ],
-            var_name="Year",
-            value_name=indicator2,
+            value_name=indicator,
         )
 
         # Reformat Year "XXXX [YRXXXX]" column to "XXXX"
-        data1["Year"] = data1["Year"].str.split(" ").str[0]
-        data2["Year"] = data2["Year"].str.split(" ").str[0]
+        data["Year"] = data["Year"].str.split(" ").str[0]
 
-        # Convert the 'indicator1' and 'indicator2' columns to numeric
-        data1[indicator1] = pd.to_numeric(data1[indicator1], errors="coerce")
-        data2[indicator2] = pd.to_numeric(data2[indicator2], errors="coerce")
+        # Convert the 'indicator' columns to numeric
+        data[indicator] = pd.to_numeric(data[indicator], errors="coerce")
 
-        # Add world data to the data1 and data2 DataFrames
-        data1 = self.__add_world_data(data1, indicator1, df1_world_calc_mode)
-        data2 = self.__add_world_data(data2, indicator2, df2_world_calc_mode)
-
-        # Merge filtered data1 and data2 based on 'Country Name' and 'Year'
-        data = pd.merge(
-            data1[data1["Year"].astype(int) >= int(self.from_year)],
-            data2[data2["Year"].astype(int) >= int(self.from_year)],
-            how="inner",
-            on=["Country Name", "Year"],
-        )
+        # Add world data to the data DataFrame
+        data = self.__add_world_data(data, indicator, world_calc_mode)
 
         # Filter data by country argument
         data = data.query("`Country Name` == @country")
 
         # Round the 'indicator1' and 'indicator2' columns to 2 decimal places
-        data.loc[:, [indicator1, indicator2]] = data[[indicator1, indicator2]].round(2)
+        data.loc[:, [indicator]] = data[[indicator]].round(2)
 
-        # Return the data as a dictionary
-        return {
-            "title": chart_info[info]["title"],
-            "description": chart_info[info]["description"],
-            "data": json.loads(data.to_json(orient="records", double_precision=2)),
-            "units": {
-                indicator1: units[indicator1],
-                indicator2: units[indicator2],
-            },
-        }
+        return data
 
     def __preprocess_water_data(self, country="World"):
         """Preprocess water data
