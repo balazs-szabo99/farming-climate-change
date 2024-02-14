@@ -3,11 +3,13 @@ from flask_cors import CORS
 
 from post_process import PostProcess
 from pre_process_data import PreprocessData
+from predict import Predictor
 
 app = Flask(__name__)
 CORS(app)
 
 preprocessor = PreprocessData()
+predictor = Predictor(10)  # 10 years
 postprocessor = PostProcess()
 
 
@@ -20,12 +22,12 @@ def index():
 def cereal_yield_and_temperature_data():
     country = request.args.get("country", "World")
     dfs = preprocessor.cerealYieldAndTemperatureData(country)
-    # TODO: predict here
-    # for df in dfs:
-    #    ...some code that adds the predicted values to the dataframe...
-    #    df = predictor.predict(df)
+    predicted_dfs = []
+    for df in dfs:
+        predicted_dfs.append(predictor.predict(df))
+
     return postprocessor.process(
-        dfs, "Cereal", "Temperature", "cereal_yield_and_temperature"
+        predicted_dfs, "Cereal", "Temperature", "cereal_yield_and_temperature"
     )
 
 
@@ -33,12 +35,12 @@ def cereal_yield_and_temperature_data():
 def temperature_and_water_usage_data():
     country = request.args.get("country", "World")
     dfs = preprocessor.temperatureAndWaterUsageData(country)
-    # TODO: predict here
-    # for df in dfs:
-    #    ...some code that adds the predicted values to the dataframe...
-    #    df = predictor.predict(df)
+    predicted_dfs = []
+    for df in dfs:
+        predicted_dfs.append(predictor.predict(df))
+
     return postprocessor.process(
-        dfs, "Temperature", "Water Usage", "temperature_and_water_usage"
+        predicted_dfs, "Temperature", "Water Usage", "temperature_and_water_usage"
     )
 
 
@@ -46,12 +48,12 @@ def temperature_and_water_usage_data():
 def greenhouse_gas_emissions_and_temperature_data():
     country = request.args.get("country", "World")
     dfs = preprocessor.greenhouseGasEmissionsAndTemperature(country)
-    # TODO: predict here
-    # for df in dfs:
-    #    ...some code that adds the predicted values to the dataframe...
-    #    df = predictor.predict(df)
+    predicted_dfs = []
+    for df in dfs:
+        predicted_dfs.append(predictor.predict(df))
+
     return postprocessor.process(
-        dfs, "Emissions", "Temperature", "emissions_and_temperature"
+        predicted_dfs, "Emissions", "Temperature", "emissions_and_temperature"
     )
 
 
@@ -59,12 +61,12 @@ def greenhouse_gas_emissions_and_temperature_data():
 def fertilizer_and_cereal_yield_data():
     country = request.args.get("country", "World")
     dfs = preprocessor.fertilizerAndCerealYield(country)
-    # TODO: predict here
-    # for df in dfs:
-    #    ...some code that adds the predicted values to the dataframe...
-    #    df = predictor.predict(df)
+    predicted_dfs = []
+    for df in dfs:
+        predicted_dfs.append(predictor.predict(df))
+
     return postprocessor.process(
-        dfs, "Fertilizer", "Cereal", "fertilizer_and_cereal_yield"
+        predicted_dfs, "Fertilizer", "Cereal", "fertilizer_and_cereal_yield"
     )
 
 
